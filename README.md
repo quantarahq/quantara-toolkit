@@ -1,5 +1,7 @@
 # quantara-toolkit
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Future developer tooling for **Quantara** — an open-source developer infrastructure
 platform for the Soroban smart contract ecosystem.
 
