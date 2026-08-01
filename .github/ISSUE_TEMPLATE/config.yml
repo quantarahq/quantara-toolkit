@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: quantara-core (backend/API/contract) issues
+    url: https://github.com/quantarahq/quantara-core/issues/new/choose
+    about: Bugs or features for the working MVP backend and contract belong there.
+  - name: quantara-web (dashboard) issues
+    url: https://github.com/quantarahq/quantara-web/issues/new/choose
+    about: Bugs or features for the working MVP dashboard belong there.
