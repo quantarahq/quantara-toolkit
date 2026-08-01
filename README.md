@@ -29,7 +29,8 @@ quantara-toolkit/
 └── README.md
 ```
 
-See each subdirectory's README for what's planned there.
+See each subdirectory's README for what's planned there, and [ROADMAP.md](ROADMAP.md)
+for how this would be sequenced into milestones.
 
 ## Roadmap
 
