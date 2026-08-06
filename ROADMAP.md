@@ -11,11 +11,12 @@ path, and so design discussion issues have something concrete to react to.
   complete, working MVP.
 - This repo is a placeholder describing where CLI/runtime work will eventually land.
 
-## Milestone 1 — CLI, read-only
+## Milestone 1 — CLI, read-only (in progress)
 
-- `quantara init` scaffolds a local project directory.
-- `quantara logs` / a `quantara projects list`-style command talks to a running
-  `quantara-core` instance read-only, using the same REST API `quantara-web` uses.
+- [x] `quantara init` scaffolds a local project directory.
+- [x] `quantara projects list` / `quantara projects get <id>` and `quantara logs
+  <project-id>` talk to a running `quantara-core` instance read-only, using the
+  same REST API `quantara-web` uses.
 - No new backend functionality required — this is purely an alternative client.
 
 ## Milestone 2 — CLI, write operations

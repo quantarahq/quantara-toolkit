@@ -1,19 +1,18 @@
 # quantara-toolkit
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Status: placeholder](https://img.shields.io/badge/status-placeholder-lightgrey.svg)](ROADMAP.md)
+[![Status: Milestone 1 in progress](https://img.shields.io/badge/status-milestone%201%20in%20progress-blue.svg)](ROADMAP.md)
 
 Future developer tooling for **Quantara** — an open-source developer infrastructure
 platform for the Soroban smart contract ecosystem.
 
-> **Status: placeholder, on purpose.** This repo exists to reserve and document the
-> shape of the future Quantara tooling ecosystem — a CLI and a runtime — so
-> contributors and grant reviewers can see where the project is headed without the
-> working MVP repos being cluttered with unfinished code. **Nothing here is
-> implemented.** For the real, working product, see
-> [quantarahq/quantara-core](https://github.com/quantarahq/quantara-core) (backend +
-> Soroban contract) and [quantarahq/quantara-web](https://github.com/quantarahq/quantara-web)
-> (dashboard).
+> **Status: Milestone 1 (read-only CLI) in progress.** The `runtime/` piece is still
+> a placeholder, and the CLI's write operations (`deploy`) aren't built yet — see
+> [ROADMAP.md](ROADMAP.md). But `cli/` now has a real, working `quantara init` /
+> `projects list` / `projects get` / `logs`, built against
+> [quantarahq/quantara-core](https://github.com/quantarahq/quantara-core)'s REST API
+> the same way [quantarahq/quantara-web](https://github.com/quantarahq/quantara-web)
+> is.
 
 Part of the Quantara project:
 
@@ -21,13 +20,13 @@ Part of the Quantara project:
 |---|---|
 | [quantara-core](https://github.com/quantarahq/quantara-core) | Backend API + Soroban contract — the working MVP |
 | [quantara-web](https://github.com/quantarahq/quantara-web) | Next.js dashboard — the working MVP |
-| **quantara-toolkit** (this repo) | Placeholder for a future CLI and runtime |
+| **quantara-toolkit** (this repo) | Read-only CLI in progress; runtime still a placeholder |
 
 ---
 
 ## Table of contents
 
-- [Why this repo exists now, empty](#why-this-repo-exists-now-empty)
+- [Why this repo exists](#why-this-repo-exists)
 - [Planned layout](#planned-layout)
 - [The CLI](#the-cli-cli)
 - [The runtime](#the-runtime-runtime)
@@ -37,7 +36,7 @@ Part of the Quantara project:
 - [FAQ](#faq)
 - [License](#license)
 
-## Why this repo exists now, empty
+## Why this repo exists
 
 The Quantara MVP (`quantara-core` + `quantara-web`) demonstrates the core developer
 workflow — create a project, deploy, inspect the contract registry — through a web
@@ -46,18 +45,19 @@ project's own philosophy, *"build a complete but minimal developer workflow inst
 of incomplete versions of every possible feature."*
 
 A CLI and an execution runtime are natural next steps once that foundation is
-validated by real usage — but building them speculatively, before the API they'd
-depend on has proven itself, would be exactly the kind of premature, half-built
-feature sprawl the MVP philosophy exists to avoid. This repo is where that work will
-land *when it's actually time*, and until then it serves a real purpose: it's a
-public, versioned place to have the design conversation, so the eventual
-implementation isn't designed from scratch under time pressure.
+validated — building them speculatively, before the API they'd depend on has proven
+itself, would be exactly the kind of premature, half-built feature sprawl the MVP
+philosophy exists to avoid. The read-only slice of the CLI (Milestone 1) carries no
+such risk: it's purely an alternative client against endpoints `quantara-web`
+already exercises, so it started once that read path existed. `deploy` (a write
+operation) and `runtime/` are still deliberately held back until there's more
+signal to design them against.
 
 ## Planned layout
 
 ```
 quantara-toolkit/
-├── cli/          Future Go CLI — quantara init / deploy / logs
+├── cli/          Go CLI — quantara init / projects / logs implemented, deploy planned
 │   └── README.md
 ├── runtime/      Future Go execution layer — sandboxes, deployment workers, simulation
 │   └── README.md
@@ -71,22 +71,24 @@ quantara-toolkit/
 
 ## The CLI (`cli/`)
 
-**Language:** Go. **Planned libraries:** [Cobra](https://github.com/spf13/cobra) for
-command structure, [Viper](https://github.com/spf13/viper) for configuration
-(config file + environment variables).
+**Language:** Go. **Stack:** [Cobra](https://github.com/spf13/cobra) for command
+structure; [Viper](https://github.com/spf13/viper) is planned for Milestone 2's
+config file/env var support.
 
-**Planned commands:**
+**Commands:**
 
 ```
-quantara init       scaffold a new Quantara project locally
-quantara deploy      deploy a contract via a running quantara-core instance
-quantara logs        tail deployment/contract activity for a project
+quantara init                    scaffold a new Quantara project locally      (done)
+quantara projects list           list all projects                            (done)
+quantara projects get <id>       show a single project                        (done)
+quantara logs <project-id>       show deployment/contract activity for a project (done)
+quantara deploy                  deploy a contract via a running quantara-core instance (Milestone 2)
 ```
 
-The CLI is meant to be **an alternative client to the same REST API `quantara-web`
-already uses** — not a separate backend, not a shortcut around `quantara-core`. If
-you can do it through the dashboard, you'll eventually be able to do it from the
-terminal, against the exact same endpoints. See
+The CLI is **an alternative client to the same REST API `quantara-web` already
+uses** — not a separate backend, not a shortcut around `quantara-core`. If you can
+do it through the dashboard, you'll eventually be able to do it from the terminal,
+against the exact same endpoints. See
 [`cli/README.md`](cli/README.md) for more detail.
 
 ## The runtime (`runtime/`)
@@ -120,12 +122,12 @@ separate repo behind a stable interface, rather than growing it directly inside
 
 See [ROADMAP.md](ROADMAP.md) for the full milestone breakdown. In short:
 
-- **Milestone 0 (today):** `quantara-core` + `quantara-web` are a complete, working
-  MVP; this repo is a placeholder.
-- **Milestone 1:** a read-only CLI (`quantara logs`, project listing) — pure
-  alternative client, no new backend work required.
-- **Milestone 2:** a write-capable CLI (`quantara deploy`, `quantara init`), plus
-  config file/env var support.
+- **Milestone 0:** `quantara-core` + `quantara-web` are a complete, working MVP.
+- **Milestone 1 (in progress):** a read-only CLI (`quantara logs`, `projects
+  list`/`get`, plus local-only `quantara init`) — pure alternative client, no new
+  backend work required.
+- **Milestone 2:** `quantara deploy` (a write operation), plus config file/env var
+  support (Viper).
 - **Milestone 3:** the runtime — real deployment workers behind the existing API.
 
 Explicitly **not** on this roadmap: multi-chain support, a hosted/managed Quantara,
@@ -134,14 +136,14 @@ natural extensions of this one.
 
 ## Contributing
 
-This repo isn't ready for implementation PRs yet — **the most useful contribution
-right now is design discussion**, not code. Start with
-[CONTRIBUTING.md](CONTRIBUTING.md). Open a
+`cli/`'s Milestone 1 commands are implemented and open to PRs — see
+[CONTRIBUTING.md](CONTRIBUTING.md). `runtime/` and `deploy` are still design-stage;
+open a
 [design discussion issue](https://github.com/quantarahq/quantara-toolkit/issues/new/choose)
-with thoughts on CLI ergonomics, config shape, or runtime architecture. If you want
-to write code today, [quantara-core](https://github.com/quantarahq/quantara-core)
-and [quantara-web](https://github.com/quantarahq/quantara-web) are the repos with
-open `good-first-issue`s.
+for those rather than sending code. If you'd rather work on the working MVP itself,
+[quantara-core](https://github.com/quantarahq/quantara-core) and
+[quantara-web](https://github.com/quantarahq/quantara-web) have open
+`good-first-issue`s too.
 
 ## FAQ
 
@@ -158,10 +160,10 @@ in Java (no JVM startup cost, no bundling a runtime) or Node (no `node_modules` 
 ship). The runtime's likely need for lightweight process/container orchestration
 also fits Go's ecosystem (Docker SDK for Go, gRPC) better than the alternatives.
 
-**When will this actually start being built?**
-No committed timeline — see [ROADMAP.md](ROADMAP.md)'s framing. It starts being
-real work once the MVP has real usage to design a CLI *against*, rather than
-guessing at ergonomics in a vacuum.
+**When will `deploy` and `runtime/` actually start being built?**
+No committed timeline — see [ROADMAP.md](ROADMAP.md)'s framing. They start being
+real work once there's more usage to design against, rather than guessing at
+ergonomics in a vacuum.
 
 ## License
 
